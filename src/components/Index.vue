@@ -10,11 +10,12 @@
             <el-col :span="6">
               <div class="myNav">
                 <el-menu
-                  :default-active="'1'"
+                  :default-active="'forum'"
+                  :router=true
                   mode="horizontal">
-                  <el-menu-item index="1">首页</el-menu-item>
+                  <el-menu-item index="forum">首页</el-menu-item>
                   <el-menu-item index="2">消息</el-menu-item>
-                  <el-menu-item index="3">注册</el-menu-item>
+                  <el-menu-item index="register">注册</el-menu-item>
                   <el-menu-item index="4">登录</el-menu-item>
                 </el-menu>
               </div>
@@ -30,7 +31,7 @@
       </el-header>
       <el-main class="main-page">
         <div id="main">
-          <DiscussPosts></DiscussPosts>
+          <router-view></router-view>
         </div>
       </el-main>
       <el-footer>
@@ -41,10 +42,8 @@
 </template>
 
 <script>
-import DiscussPosts from './Discuss/DiscussPosts'
 export default {
   name: 'Index',
-  components: {DiscussPosts},
   data () {
     return {
       searchParams: ''
