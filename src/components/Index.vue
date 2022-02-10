@@ -10,7 +10,7 @@
             <el-col :span="6">
               <div class="myNav">
                 <el-menu
-                  :default-active="'forum'"
+                  :default-active="curPage"
                   :router=true
                   mode="horizontal">
                   <el-menu-item index="forum">首页</el-menu-item>
@@ -48,6 +48,13 @@ export default {
     return {
       searchParams: ''
     }
+  },
+  methods: {
+  },
+  computed: {
+    curPage () {
+      return this.$route.path.substring(1)
+    }
   }
 }
 </script>
@@ -64,6 +71,6 @@ export default {
   border-bottom: none;
 }
 .main-page{
-  background-color: floralwhite;
+  /*background-color: floralwhite;*/
 }
 </style>

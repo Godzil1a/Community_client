@@ -79,8 +79,13 @@ export default {
       }).then(res => {
         if (res.success === 'true') {
           // 注册成功，跳转
-          // todo 跳转页面
-          console.log('success!')
+          this.$router.push({
+            name: 'Redirect',
+            params: {
+              msg: '注册成功！我们已向您的邮箱发送了一封激活邮件，请尽快激活！',
+              url: '/forum'
+            }
+          })
         } else {
           this.$notify.error({
             title: '错误',

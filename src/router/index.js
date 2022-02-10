@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/components/Index'
 import DiscussPosts from '../components/Discuss/DiscussPosts'
 import Register from '../components/Register/Register'
+import Redirect from '../components/Redirect'
 
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://localhost:8080/api'
@@ -28,7 +29,12 @@ export default new Router({
           component: Register
         },
         {
-          path: '*',
+          path: 'redirect',
+          name: 'Redirect',
+          component: Redirect
+        },
+        {
+          path: '',
           redirect: 'forum'
         }
       ]
