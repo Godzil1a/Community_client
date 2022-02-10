@@ -54,6 +54,7 @@ export default {
       }
     }
   }
+  // todo: 注册校验、页面跳转以及请求封装
 }
 </script>
 

@@ -19,6 +19,7 @@
 
 <script>
 import Post from './Post'
+import {getDiscussPosts} from '../../api/discussPosts'
 export default {
   name: 'DiscussPosts',
   components: {Post},
@@ -34,16 +35,15 @@ export default {
   },
   methods: {
     getDiscussPosts () {
-      this.$axios.post('/api/getDiscussPosts', this.page)
-        .then(res => {
-          this.discussPosts = res.data.discussPosts
-          this.page = res.data.page
-        }).catch(ex => {
-          this.$notify.error({
-            title: '错误',
-            message: '请求数据失败！'
-          })
+      getDiscussPosts(this.page).then(res => {
+        this.discussPosts = res.discussPosts
+        this.page = res.page
+      }).catch(ex => {
+        this.$notify.error({
+          title: '错误',
+          message: '请求数据失败！'
         })
+      })
     },
     changePageSize (curPageSize) {
       this.page.pageSize = curPageSize
