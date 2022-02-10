@@ -16,6 +16,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
+          <el-button type="primary" @click="test">test</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -97,6 +98,15 @@ export default {
           title: '错误',
           message: '注册失败！'
         })
+      })
+    },
+    test () {
+      this.$router.push({
+        name: 'Redirect',
+        params: {
+          msg: '注册成功！我们已向您的邮箱发送了一封激活邮件，请尽快激活！',
+          url: '/forum'
+        }
       })
     }
   }

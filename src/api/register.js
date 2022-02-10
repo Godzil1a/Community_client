@@ -8,4 +8,11 @@ const registerUser = (user) => {
   })
 }
 
-export {registerUser}
+const acvitateUser = (userId, code) => {
+  return request({
+    url: '/api/activation/' + userId + '/' + code,
+    method: 'get'
+  })
+}
+
+export {registerUser, acvitateUser}

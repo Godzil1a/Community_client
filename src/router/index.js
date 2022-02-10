@@ -4,6 +4,7 @@ import Index from '@/components/Index'
 import DiscussPosts from '../components/Discuss/DiscussPosts'
 import Register from '../components/Register/Register'
 import Redirect from '../components/Redirect'
+import Activation from '../components/Register/Activation'
 
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://localhost:8080/api'
@@ -15,7 +16,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
       component: Index,
       children: [
         {
@@ -32,6 +32,12 @@ export default new Router({
           path: 'redirect',
           name: 'Redirect',
           component: Redirect
+        },
+        {
+          path: 'activation/:userId/:code',
+          name: 'Activation',
+          props: true,
+          component: Activation
         },
         {
           path: '',
