@@ -1,60 +1,100 @@
 <template>
   <div>
     <el-card class="box-card">
-      <div slot="header">
-        <span>注册</span>
-      </div>
-      <el-row class="row">
-        <el-col :span="6">
-          <span>账号：</span>
-        </el-col>
-        <el-col :span="18">
-          <el-input v-model="user.username" placeholder="请输入您的账号"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="row">
-        <el-col :span="6">
-          <span>密码：</span>
-        </el-col>
-        <el-col :span="18">
-          <el-input v-model="user.password" placeholder="请输入您的密码"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="row">
-        <el-col :span="6">
-          <span>确认密码：</span>
-        </el-col>
-        <el-col :span="18">
-          <el-input v-model="user.passwordRepeat" placeholder="请再次输入密码"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="row">
-        <el-col :span="6">
-          <span>邮箱：</span>
-        </el-col>
-        <el-col :span="18">
-          <el-input v-model="user.email" placeholder="请输入您的邮箱"></el-input>
-        </el-col>
-      </el-row>
-      <el-button type="primary">注册</el-button>
+      <el-form :model="user" :rules="rules" ref="registerForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="user.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="user.password" show-password></el-input>
+        </el-form-item>
+        <el-form-item label="重复密码" prop="passwordRepeat">
+          <el-input v-model="user.passwordRepeat" show-password></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="user.email"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
+        </el-form-item>
+      </el-form>
     </el-card>
   </div>
 </template>
 
 <script>
+import {registerUser} from '../../api/register'
 export default {
   name: 'Register',
   data () {
+    const checkPassword = (rule, value, callback) => {
+      if (value !== this.user.password) {
+        callback(new Error('两次输入密码不一致！'))
+      } else {
+        callback()
+      }
+    }
     return {
       user: {
         username: '',
         password: '',
         passwordRepeat: '',
         email: ''
+      },
+      // todo 完善校验策略
+      rules: {
+        username: { required: true, message: '用户名不能为空！', trigger: 'blur' },
+        password: {required: true, message: '请输入密码！', trigger: 'blur'},
+        passwordRepeat: [
+          {required: true, message: '请再次输入密码！', trigger: 'blur'},
+          {validator: checkPassword, trigger: 'blur'}
+        ],
+        email: [
+          {required: true, message: '请输入邮箱！', trigger: 'blur'},
+          {type: 'email', message: '邮箱格式错误！', trigger: 'blur'}
+        ]
       }
     }
+  },
+  methods: {
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 调用注册方法
+          this.register()
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: '注册信息有误！'
+          })
+          return false
+        }
+      })
+    },
+    register () {
+      registerUser({
+        username: this.user.username,
+        password: this.user.password,
+        email: this.user.email
+      }).then(res => {
+        if (res.success === 'true') {
+          // 注册成功，跳转
+          // todo 跳转页面
+          console.log('success!')
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: res.errMsg
+          })
+        }
+      }).catch(ex => {
+        this.$notify.error({
+          title: '错误',
+          message: '注册失败！'
+        })
+      })
+    }
   }
-  // todo: 注册校验、页面跳转以及请求封装
 }
 </script>
 
@@ -62,8 +102,5 @@ export default {
 .box-card{
   width: 800px;
   margin: auto;
-}
-.row{
-  margin: 10px;
 }
 </style>
