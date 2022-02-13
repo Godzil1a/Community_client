@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 const getDiscussPosts = (page) => {
   return request({
-    url: '/api/getDiscussPosts',
+    url: '/community/getDiscussPosts',
     method: 'post',
     data: page
   })

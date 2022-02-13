@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 const registerUser = (user) => {
   return request({
-    url: '/api/register',
+    url: '/community/register',
     method: 'post',
     data: user
   })
@@ -10,7 +10,7 @@ const registerUser = (user) => {
 
 const acvitateUser = (userId, code) => {
   return request({
-    url: '/api/activation/' + userId + '/' + code,
+    url: '/community/activation/' + userId + '/' + code,
     method: 'get'
   })
 }

@@ -1,6 +1,8 @@
 <template>
   <div>
     <el-card class="box-card">
+      <h3>注册</h3>
+      <el-divider></el-divider>
       <el-form :model="user" :rules="rules" ref="registerForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="user.username"></el-input>
@@ -89,7 +91,7 @@ export default {
         } else {
           this.$notify.error({
             title: '错误',
-            message: res.errMsg
+            message: res.msg
           })
         }
       }).catch(ex => {

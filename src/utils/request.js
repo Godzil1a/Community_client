@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
+  withCredentials: true,
   timeout: 5000
 })
 // 超时后的处理
