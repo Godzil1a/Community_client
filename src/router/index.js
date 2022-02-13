@@ -5,6 +5,7 @@ import DiscussPosts from '../components/Discuss/DiscussPosts'
 import Register from '../components/Register/Register'
 import Redirect from '../components/Redirect'
 import Activation from '../components/Register/Activation'
+import Login from '../components/Login/Login'
 
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://localhost:8080/api'
@@ -32,6 +33,11 @@ export default new Router({
           path: 'redirect',
           name: 'Redirect',
           component: Redirect
+        },
+        {
+          path: 'login',
+          name: 'Login',
+          component: Login
         },
         {
           path: 'activation/:userId/:code',
