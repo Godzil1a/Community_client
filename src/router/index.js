@@ -6,6 +6,7 @@ import Register from '../components/Register/Register'
 import Redirect from '../components/Redirect'
 import Activation from '../components/Register/Activation'
 import Login from '../components/Login/Login'
+import Poem from '../components/Poem'
 
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://localhost:8080/api'
@@ -50,6 +51,10 @@ export default new Router({
           redirect: 'forum'
         }
       ]
+    },
+    {
+      path: '/poem',
+      component: Poem
     }
   ]
 })

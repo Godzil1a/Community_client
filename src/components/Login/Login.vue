@@ -10,20 +10,21 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="user.password" show-password></el-input>
         </el-form-item>
-        <el-form-item label="验证码" prop="email">
-          <el-col :span="19">
+        <el-form-item label="验证码" prop="kaptcha">
+          <el-col :span="17">
             <el-input v-model="user.code"></el-input>
           </el-col>
-          <el-col :span="5">
-            <el-image style="width: 100px; height: 40px" :src="kaptchaUrl"></el-image>
-            <el-button type="text" @click="refreshKaptcha">刷新验证码</el-button>
+          <el-col :span="7" style="height: 40px">
+            <el-image :src="kaptchaUrl"></el-image>
+            <el-button type="text" @click="refreshKaptcha" style="margin: auto">刷新验证码</el-button>
           </el-col>
         </el-form-item>
-        <el-form-item label="记住我">
-          <el-switch v-model="user.rememberMe"></el-switch>
+        <el-form-item>
+          <el-checkbox v-model="user.rememberMe" style="float: left">记住我</el-checkbox>
+          <el-button type="text" @click="refreshKaptcha" style="float: right">忘记密码</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="loginUser(user)">登录</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -32,6 +33,7 @@
 
 <script>
 import {login} from '../../api/login'
+import {mapActions} from 'vuex'
 export default {
   name: 'Login',
   data () {
@@ -43,24 +45,30 @@ export default {
         code: '',
         rememberMe: false
       },
-      rules: {}
+      rules: {
+        username: { required: true, message: '用户名不能为空！', trigger: 'blur' },
+        password: {required: true, message: '请输入密码！', trigger: 'blur'}
+      }
     }
   },
   methods: {
-    // submitForm (formName) {
-    //   this.$refs[formName].validate((valid) => {
-    //     if (valid) {
-    //       // 调用注册方法
-    //       this.register()
-    //     } else {
-    //       this.$notify.error({
-    //         title: '错误',
-    //         message: '注册信息有误！'
-    //       })
-    //       return false
-    //     }
-    //   })
-    // },
+    ...mapActions({
+      stateLogin: 'login'
+    }),
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 调用注册方法
+          this.loginUser(this.user)
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: '登录信息有误！'
+          })
+          return false
+        }
+      })
+    },
     refreshKaptcha () {
       const num = Math.ceil(Math.random() * 10)
       this.kaptchaUrl = '/community/kaptcha' + '?p=' + num
@@ -68,7 +76,16 @@ export default {
     loginUser (user) {
       login(user.username, user.password, user.code, user.rememberMe).then(res => {
         if (res.success === 'true') {
-          console.log(res)
+          this.stateLogin({
+            username: user.username,
+            header_url: res.header_url
+          })
+          this.$notify({
+            title: '成功',
+            message: '登陆成功！',
+            type: 'success'
+          })
+          this.$router.push('/forum')
         } else {
           this.$notify.error({
             title: '错误',
@@ -87,5 +104,8 @@ export default {
 </script>
 
 <style scoped>
-
+.box-card{
+  width: 800px;
+  margin: auto;
+}
 </style>
