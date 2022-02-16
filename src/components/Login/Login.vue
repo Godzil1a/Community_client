@@ -77,6 +77,7 @@ export default {
       login(user.username, user.password, user.code, user.rememberMe).then(res => {
         if (res.success === 'true') {
           this.stateLogin({
+            userId: res.userId,
             username: user.username,
             header_url: res.header_url
           })

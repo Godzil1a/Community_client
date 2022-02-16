@@ -29,7 +29,7 @@
                 <el-avatar shape="square" size="large" fit="cover" :src="user.header_url"></el-avatar>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>个人主页</el-dropdown-item>
-                  <el-dropdown-item>账号设置</el-dropdown-item>
+                  <el-dropdown-item @click.native="$router.push('/info')">账号设置</el-dropdown-item>
                   <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
                   <el-dropdown-item divided>{{user.username}}</el-dropdown-item>
                 </el-dropdown-menu>

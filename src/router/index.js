@@ -7,6 +7,7 @@ import Redirect from '../components/Redirect'
 import Activation from '../components/Register/Activation'
 import Login from '../components/Login/Login'
 import Poem from '../components/Poem'
+import Info from '../components/User/Info'
 
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://localhost:8080/api'
@@ -45,6 +46,11 @@ export default new Router({
           name: 'Activation',
           props: true,
           component: Activation
+        },
+        {
+          path: 'info',
+          name: 'Info',
+          component: Info
         },
         {
           path: '',
