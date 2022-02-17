@@ -52,6 +52,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import {logout} from '../api/log'
 export default {
   name: 'Index',
   data () {
@@ -62,7 +63,28 @@ export default {
   methods: {
     ...mapActions({stateLogout: 'logout'}),
     logout () {
-      this.stateLogout()
+      logout()
+        .then(res => {
+          if (res.success === 'true') {
+            this.stateLogout()
+            this.$notify({
+              title: '成功',
+              message: '已退出登录！',
+              type: 'success'
+            })
+          } else {
+            this.$notify.error({
+              title: '错误',
+              message: res.msg
+            })
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: '退出登录失败！'
+          })
+        })
     }
   },
   computed: {

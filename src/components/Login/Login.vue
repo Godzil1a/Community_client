@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {login} from '../../api/login'
+import {login} from '../../api/log'
 import {mapActions} from 'vuex'
 export default {
   name: 'Login',

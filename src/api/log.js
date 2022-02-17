@@ -13,4 +13,11 @@ const login = (username, password, code, rememberMe) => {
   })
 }
 
-export {login}
+const logout = () => {
+  return request({
+    url: '/community/logout',
+    method: 'get'
+  })
+}
+
+export {login, logout}
