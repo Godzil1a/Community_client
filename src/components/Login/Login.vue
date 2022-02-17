@@ -87,6 +87,7 @@ export default {
             type: 'success'
           })
           this.$router.push('/forum')
+          localStorage.setItem('islogin', 1)
         } else {
           this.$notify.error({
             title: '错误',

@@ -67,6 +67,7 @@ export default {
         .then(res => {
           if (res.success === 'true') {
             this.stateLogout()
+            localStorage.setItem('islogin', 0)
             this.$notify({
               title: '成功',
               message: '已退出登录！',

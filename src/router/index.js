@@ -15,7 +15,7 @@ Vue.prototype.$axios = axios
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -50,7 +50,8 @@ export default new Router({
         {
           path: 'info',
           name: 'Info',
-          component: Info
+          component: Info,
+          meta: {requireAuth: true}
         },
         {
           path: '',
@@ -64,3 +65,38 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  let islogin = localStorage.getItem('islogin')
+  islogin = Boolean(Number(islogin))
+
+  if (to.path === '/login' || to.path === '/register') {
+    if (islogin) {
+      next({
+        name: 'Redirect',
+        params: {
+          msg: '您已登录！',
+          url: '/forum'
+        }
+      })
+    } else {
+      next()
+    }
+  } else if (to.meta.requireAuth) {
+    if (islogin) {
+      next()
+    } else {
+      next({
+        name: 'Redirect',
+        params: {
+          msg: '请先登录！',
+          url: '/login'
+        }
+      })
+    }
+  } else {
+    next()
+  }
+})
+
+export default router
