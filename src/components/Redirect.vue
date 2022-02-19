@@ -9,7 +9,7 @@
           {{timeout}}
         </span>
         秒后自动跳转！</span>
-      <span>您也可以点此<router-link @click.native="clear" :to="this.$route.params.url">链接</router-link>，手动跳转！</span>
+      <span>您也可以点此<router-link :to="this.$route.params.url">链接</router-link>，手动跳转！</span>
     </el-card>
   </div>
 </template>
@@ -32,13 +32,13 @@ export default {
         }
         this.timeout--
       }, 1000)
-    },
-    clear () {
-      clearInterval(this.timer)
     }
   },
   created () {
     this.countdown()
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
   }
 }
 </script>

@@ -11,4 +11,12 @@ const uploadHeader = (header) => {
   })
 }
 
-export {uploadHeader}
+const updatePassword = (data) => {
+  return request({
+    url: '/community/user/updatePassword',
+    method: 'post',
+    data: data
+  })
+}
+
+export {uploadHeader, updatePassword}

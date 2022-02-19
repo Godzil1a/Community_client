@@ -75,7 +75,7 @@ export default {
     },
     loginUser (user) {
       login(user.username, user.password, user.code, user.rememberMe).then(res => {
-        if (res.success === 'true') {
+        if (res.code === 200) {
           this.stateLogin({
             userId: res.userId,
             username: user.username,
@@ -87,7 +87,7 @@ export default {
             type: 'success'
           })
           this.$router.push('/forum')
-          localStorage.setItem('islogin', 1)
+          // localStorage.setItem('islogin', 1)
         } else {
           this.$notify.error({
             title: '错误',

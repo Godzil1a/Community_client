@@ -79,7 +79,7 @@ export default {
         password: this.user.password,
         email: this.user.email
       }).then(res => {
-        if (res.success === 'true') {
+        if (res.code === 200) {
           // 注册成功，跳转
           this.$router.push({
             name: 'Redirect',

@@ -8,6 +8,7 @@ import Activation from '../components/Register/Activation'
 import Login from '../components/Login/Login'
 import Poem from '../components/Poem'
 import Info from '../components/User/Info'
+import state from '../store/state'
 
 var axios = require('axios')
 // axios.defaults.baseURL = 'http://localhost:8080/api'
@@ -67,8 +68,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let islogin = localStorage.getItem('islogin')
-  islogin = Boolean(Number(islogin))
+  const islogin = state.loginStatus
 
   if (to.path === '/login' || to.path === '/register') {
     if (islogin) {
