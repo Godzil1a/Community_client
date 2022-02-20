@@ -12,7 +12,7 @@
       </el-col>
     </el-row>
     <div v-for="post in discussPosts" :key="post.id" class="post">
-      <Post :post="post"></Post>
+      <Post :discuss-post="post"></Post>
     </div>
     <el-pagination
       @size-change="changePageSize"

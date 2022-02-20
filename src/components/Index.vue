@@ -20,11 +20,11 @@
                 </el-menu>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" style="padding-top: 8px">
               <el-input style="width: 200px" v-model="searchParams" placeholder="请输入内容"></el-input>
               <el-button style="margin-left: 10px" icon="el-icon-search" circle></el-button>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" style="padding-top: 8px">
               <el-dropdown style="float: left" placement="bottom" v-show="loginStatus">
                 <el-avatar shape="square" size="large" fit="cover" :src="user.header_url"></el-avatar>
                 <el-dropdown-menu slot="dropdown">
@@ -91,7 +91,6 @@ export default {
       getLoginStatus()
         .then(res => {
           if (res.code === 200 && res.isLogin === 'true') {
-            console.log('初始化！')
             this.login({
               userId: res.userId,
               username: res.username,
