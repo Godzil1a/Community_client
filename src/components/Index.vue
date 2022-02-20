@@ -60,6 +60,7 @@ export default {
       searchParams: ''
     }
   },
+  // todo 向服务器请求当前登录状态
   methods: {
     ...mapActions({stateLogout: 'logout'}),
     logout () {

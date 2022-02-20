@@ -8,4 +8,12 @@ const getDiscussPosts = (page) => {
   })
 }
 
-export {getDiscussPosts}
+const addPost = (post) => {
+  return request({
+    url: '/community/discuss/add',
+    method: 'post',
+    data: post
+  })
+}
+
+export {getDiscussPosts, addPost}
