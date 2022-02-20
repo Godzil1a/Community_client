@@ -64,7 +64,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({setHeader: 'setHeaderUrl'}),
+    ...mapActions({setUser: 'setUser'}),
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -101,7 +101,11 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.info.header = res.header
-            this.setHeader(res.header)
+            this.setUser({
+              userId: this.user.userId,
+              username: this.user.username,
+              header_url: res.header
+            })
             this.$notify({
               title: '成功',
               message: '头像上传成功！',

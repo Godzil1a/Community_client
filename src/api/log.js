@@ -20,4 +20,11 @@ const logout = () => {
   })
 }
 
-export {login, logout}
+const getLoginStatus = () => {
+  return request({
+    url: '/community/loginStatus',
+    method: 'get'
+  })
+}
+
+export {login, logout, getLoginStatus}

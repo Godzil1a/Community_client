@@ -52,7 +52,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
-import {logout} from '../api/log'
+import {logout, getLoginStatus} from '../api/log'
 export default {
   name: 'Index',
   data () {
@@ -62,13 +62,12 @@ export default {
   },
   // todo 向服务器请求当前登录状态
   methods: {
-    ...mapActions({stateLogout: 'logout'}),
+    ...mapActions({stateLogout: 'logout', login: 'login'}),
     logout () {
       logout()
         .then(res => {
           if (res.code === 200) {
             this.stateLogout()
-            // localStorage.setItem('islogin', 0)
             this.$notify({
               title: '成功',
               message: '已退出登录！',
@@ -87,6 +86,25 @@ export default {
             message: '退出登录失败！'
           })
         })
+    },
+    initLoginStatus () {
+      getLoginStatus()
+        .then(res => {
+          if (res.code === 200 && res.isLogin === 'true') {
+            console.log('初始化！')
+            this.login({
+              userId: res.userId,
+              username: res.username,
+              header_url: res.header_url
+            })
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: '获取登录信息失败！'
+          })
+        })
     }
   },
   computed: {
@@ -94,6 +112,9 @@ export default {
     curPage () {
       return this.$route.path.substring(1)
     }
+  },
+  mounted () {
+    this.initLoginStatus()
   }
 }
 </script>

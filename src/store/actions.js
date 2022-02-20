@@ -13,12 +13,8 @@ const actions = {
       header_url: ''
     })
   },
-  setHeaderUrl ({rootState, commit}, header) {
-    commit(types.SET_USER, {
-      userId: rootState.user.userId,
-      username: rootState.user.username,
-      header_url: header
-    })
+  setUser ({rootState, commit}, user) {
+    commit(types.SET_USER, user)
   }
 }
 
