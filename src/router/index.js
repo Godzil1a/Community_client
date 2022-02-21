@@ -56,7 +56,7 @@ const router = new Router({
           meta: {requireAuth: true}
         },
         {
-          path: 'post/:postId',
+          path: 'post/:id',
           name: 'PostDetail',
           component: PostDetail
         },

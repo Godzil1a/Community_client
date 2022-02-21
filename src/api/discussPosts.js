@@ -16,4 +16,11 @@ const addPost = (post) => {
   })
 }
 
-export {getDiscussPosts, addPost}
+const getDiscussPostById = (id) => {
+  return request({
+    url: `/community/discuss/post/${id}`,
+    method: 'get'
+  })
+}
+
+export {getDiscussPosts, addPost, getDiscussPostById}
