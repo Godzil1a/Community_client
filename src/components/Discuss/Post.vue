@@ -1,6 +1,5 @@
 <template>
   <div class="post">
-<!--    todo 对发帖时间、标题、内容进行过滤-->
     <el-container>
       <el-aside width="200px">
         <el-image
@@ -10,12 +9,12 @@
       </el-aside>
       <el-container style="text-align: left">
         <el-header>
-          <span>
-            {{discussPost.post.title}}
-          </span>
+          <a style="cursor: pointer" @click="route">
+            {{discussPost.post.title | unescape}}
+          </a>
         </el-header>
         <el-main>
-          {{discussPost.user.username }}发布于{{discussPost.post.createTime}}
+          {{discussPost.user.username }} 发布于 {{discussPost.post.createTime | dateFormat}}
         </el-main>
       </el-container>
     </el-container>
@@ -25,7 +24,14 @@
 <script>
 export default {
   name: 'Post',
-  props: ['discussPost']
+  props: ['discussPost'],
+  methods: {
+    route () {
+      this.$router.push({
+        path: `/post/${this.discussPost.post.id}`
+      })
+    }
+  }
 }
 </script>
 

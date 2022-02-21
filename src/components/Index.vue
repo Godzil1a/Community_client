@@ -10,10 +10,10 @@
             <el-col :span="6">
               <div class="myNav">
                 <el-menu
+                  :router="true"
                   :default-active="curPage"
-                  :router=true
                   mode="horizontal">
-                  <el-menu-item index="forum">首页</el-menu-item>
+                  <el-menu-item index="forum" :route="{path: '/forum'}">首页</el-menu-item>
                   <el-menu-item index="2" v-show="loginStatus">消息</el-menu-item>
                   <el-menu-item index="register" v-show="!loginStatus">注册</el-menu-item>
                   <el-menu-item index="login" v-show="!loginStatus">登录</el-menu-item>

@@ -8,6 +8,7 @@ import Activation from '../components/Register/Activation'
 import Login from '../components/Login/Login'
 import Poem from '../components/Poem'
 import Info from '../components/User/Info'
+import PostDetail from '../components/Discuss/PostDetail'
 import state from '../store/state'
 
 var axios = require('axios')
@@ -53,6 +54,11 @@ const router = new Router({
           name: 'Info',
           component: Info,
           meta: {requireAuth: true}
+        },
+        {
+          path: 'post/:postId',
+          name: 'PostDetail',
+          component: PostDetail
         },
         {
           path: '',
