@@ -60,7 +60,6 @@ export default {
       searchParams: ''
     }
   },
-  // todo 向服务器请求当前登录状态
   methods: {
     ...mapActions({stateLogout: 'logout', login: 'login'}),
     logout () {
@@ -109,7 +108,9 @@ export default {
   computed: {
     ...mapState(['loginStatus', 'user']),
     curPage () {
-      return this.$route.path.substring(1)
+      let str = this.$route.path.substring(1)
+      let pos = str.lastIndexOf('/')
+      return pos < 0 ? str : str.substring(0, pos)
     }
   },
   mounted () {
