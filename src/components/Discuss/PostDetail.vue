@@ -1,11 +1,12 @@
 <template>
   <div>
+<!--    帖子详情-->
     <el-card>
       <div slot="header">
         <el-row>
           <el-col :span="18">
             <i class="el-icon-postcard" style="float: left;margin-top: 13px"></i>
-            <span style="float: left;margin: 10px 10px">{{post.title}}</span>
+            <span style="float: left;margin: 10px 10px">{{post.title | unescape}}</span>
           </el-col>
           <el-col :span="2">
             <el-button size="small" type="danger">置顶</el-button>
@@ -40,31 +41,67 @@
         </el-container>
       </div>
       <div class="content">
-        <span>
-          {{post.content}}
-        </span>
+        {{post.content | unescape}}
       </div>
     </el-card>
+<!--    回复-->
+    <br>
+    <el-card>
+      <div slot="header">
+        <el-row>
+          <el-col :span="21">
+            <span style="float: left;margin-top: 10px;margin-left: 20px">{{post.commentCount}} 条回帖</span>
+          </el-col>
+          <el-col :span="3">
+            <el-button type="primary" icon="el-icon-edit" style="float: right">发帖</el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <comment v-for="(comment,index) in comments" :key="index" :comment="comment" :index="index"></comment>
+    </el-card>
+    <br>
+    <el-pagination
+      @size-change="changePageSize"
+      @current-change="changePage"
+      :current-page="page.currentPage"
+      :page-sizes="[10, 20, 30]"
+      :page-size="page.pageSize"
+      layout="jumper, prev, pager, next, sizes, total"
+      :total="page.total">
+    </el-pagination>
   </div>
 </template>
 
 <script>
 import {getDiscussPostById} from '../../api/discussPosts'
+import Comment from './Comment'
 export default {
   name: 'PostDetail',
+  components: {Comment},
   data () {
     return {
       post: {},
-      user: {}
+      user: {},
+      comments: [],
+      page: {
+        currentPage: 1,
+        pageSize: 10,
+        total: 100
+      }
     }
   },
   methods: {
     queryDiscussPost () {
       let id = this.$route.params.id
-      getDiscussPostById(id)
+      const page = this.page
+      let offset = (page.currentPage - 1) * page.pageSize
+      let limit = page.pageSize
+      getDiscussPostById(id, offset, limit)
         .then(res => {
           this.post = res.post
           this.user = res.user
+          this.comments = res.comments
+          this.page.total = this.post.commentCount
         })
         .catch(ex => {
           this.$notify.error({
@@ -72,6 +109,14 @@ export default {
             message: '获取内容失败！请重试！'
           })
         })
+    },
+    changePageSize (curPageSize) {
+      this.page.pageSize = curPageSize
+      this.queryDiscussPost()
+    },
+    changePage (curPage) {
+      this.page.currentPage = curPage
+      this.queryDiscussPost()
     }
   },
   mounted () {

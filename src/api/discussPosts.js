@@ -16,10 +16,14 @@ const addPost = (post) => {
   })
 }
 
-const getDiscussPostById = (id) => {
+const getDiscussPostById = (id, offset, limit) => {
   return request({
     url: `/community/discuss/post/${id}`,
-    method: 'get'
+    method: 'get',
+    params: {
+      offset: offset,
+      limit: limit
+    }
   })
 }
 

@@ -25,12 +25,14 @@ Vue.filter('dateFormat', function (input) {
 })
 
 Vue.filter('unescape', function (html) {
-  return html
-    .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
+  if (html != null) {
+    return html
+      .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+  }
 })
 
 /* eslint-disable no-new */
