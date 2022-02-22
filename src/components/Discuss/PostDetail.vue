@@ -58,22 +58,32 @@
         </el-row>
       </div>
       <comment v-for="(comment,index) in comments" :key="index" :comment="comment" :index="index"></comment>
+      <el-pagination
+        @size-change="changePageSize"
+        @current-change="changePage"
+        :current-page="page.currentPage"
+        :page-sizes="[10, 20, 30]"
+        :page-size="page.pageSize"
+        layout="jumper, prev, pager, next, sizes, total"
+        :total="page.total">
+      </el-pagination>
     </el-card>
     <br>
-    <el-pagination
-      @size-change="changePageSize"
-      @current-change="changePage"
-      :current-page="page.currentPage"
-      :page-sizes="[10, 20, 30]"
-      :page-size="page.pageSize"
-      layout="jumper, prev, pager, next, sizes, total"
-      :total="page.total">
-    </el-pagination>
+    <el-card>
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 5, maxRows: 10}"
+        placeholder="在这里畅所欲言吧！"
+        v-model="curComment">
+      </el-input>
+      <el-button type="primary" size="medium" style="float: right;margin: 10px 0 10px 0" @click="addComment(1)">发帖</el-button>
+    </el-card>
   </div>
 </template>
 
 <script>
 import {getDiscussPostById} from '../../api/discussPosts'
+import {insertComment} from '../../api/comment'
 import Comment from './Comment'
 export default {
   name: 'PostDetail',
@@ -87,7 +97,8 @@ export default {
         currentPage: 1,
         pageSize: 10,
         total: 100
-      }
+      },
+      curComment: ''
     }
   },
   methods: {
@@ -117,6 +128,28 @@ export default {
     changePage (curPage) {
       this.page.currentPage = curPage
       this.queryDiscussPost()
+    },
+    addComment (entityType) {
+      const comment = {
+        entityType: entityType,
+        entityId: this.post.id,
+        content: this.curComment
+      }
+      insertComment(comment)
+        .then(res => {
+          if (res === 200) {
+            this.curComment = ''
+            this.queryDiscussPost()
+          } else {
+            throw new Error(res.msg)
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `获取内容失败！${ex.message}!请重试！`
+          })
+        })
     }
   },
   mounted () {

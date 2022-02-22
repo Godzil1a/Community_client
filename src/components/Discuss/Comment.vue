@@ -14,7 +14,7 @@
               {{comment.user.username}}
             </el-col>
             <el-col :span="3">
-              {{index}} #
+              {{index+1}} #
             </el-col>
           </el-row>
         </el-header>
