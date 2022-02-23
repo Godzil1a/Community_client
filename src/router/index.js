@@ -10,6 +10,7 @@ import Poem from '../components/Poem'
 import Info from '../components/User/Info'
 import PostDetail from '../components/Discuss/PostDetail'
 import Message from '../components/Message/Message'
+import MessageDetail from '../components/Message/MessageDetail'
 import state from '../store/state'
 
 var axios = require('axios')
@@ -60,6 +61,12 @@ const router = new Router({
           name: 'Info',
           component: Info,
           meta: {requireAuth: true}
+        },
+        {
+          path: 'message/detail/:convsersationId',
+          name: 'MessageDetail',
+          props: true,
+          component: MessageDetail
         },
         {
           path: 'post/:id',

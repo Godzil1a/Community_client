@@ -8,4 +8,12 @@ const getMessageList = (page) => {
   })
 }
 
-export {getMessageList}
+const queryLetterDetail = (conversationId, page) => {
+  return request({
+    url: `/community/message/detail/${conversationId}`,
+    method: 'get',
+    params: page
+  })
+}
+
+export {getMessageList, queryLetterDetail}

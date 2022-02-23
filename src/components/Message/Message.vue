@@ -6,10 +6,10 @@
           用户私信
           <el-badge :value="unreadCount" :hidden="unreadCount===0"></el-badge>
         </span>
-        <div v-for="(letter,index) in items" :key="index">
+        <div v-for="(letter,index) in items" :key="index" @click="route(letter)" style="cursor: pointer">
           <el-container>
             <el-aside width="150px" style="padding-top: 10px">
-              <el-badge :value="letter.unread">
+              <el-badge :value="letter.unread" :hidden="letter.unread===0">
                 <el-image
                   style="width: 110px; height: 110px"
                   :src="letter.target.headerUrl"
@@ -98,6 +98,9 @@ export default {
     changePage (curPage) {
       this.page.currentPage = curPage
       this.queryMessageList()
+    },
+    route (letter) {
+      this.$router.push(`/message/detail/${letter.conversation.conversationId}`)
     }
   },
   mounted () {
