@@ -57,7 +57,7 @@
           </el-col>
         </el-row>
       </div>
-      <comment v-for="(comment,index) in comments" :key="index" :comment="comment" :index="index"></comment>
+      <comment v-for="(comment,index) in comments" :key="index" :comment="comment" :index="index" :query-discuss-post="queryDiscussPost"></comment>
       <el-pagination
         @size-change="changePageSize"
         @current-change="changePage"
@@ -147,7 +147,7 @@ export default {
         .catch(ex => {
           this.$notify.error({
             title: '错误',
-            message: `获取内容失败！${ex.message}!请重试！`
+            message: `评论失败！${ex.message}!请重试！`
           })
         })
     }

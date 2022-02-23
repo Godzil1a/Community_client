@@ -35,7 +35,6 @@
       </el-container>
     </el-container>
     <div v-show="isReply" style="width: 916px;margin: 0px 0px 20px 150px">
-<!--      <reply v-for="(reply,index) in comment.replys" :key="index" :reply="reply"></reply>-->
       <div v-for="(reply,index) in comment.replys" :key="index">
         <el-container>
           <el-header style="height: 30px">
@@ -59,7 +58,7 @@
             <el-input v-model="curComment" :placeholder="`回复${reply.user.username}`" style="margin-left: 20px"></el-input>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary">回复</el-button>
+            <el-button type="primary" @click="addComment(2,reply.reply.entityId,reply.user.id)">回复</el-button>
           </el-col>
         </el-row>
       </div>
@@ -68,7 +67,7 @@
           <el-input v-model="curComment" placeholder="请输入回复！" style="margin-left: 20px"></el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">回复</el-button>
+          <el-button type="primary" @click="addComment(2,comment.comment.id,0)">回复</el-button>
         </el-col>
       </el-row>
     </div>
@@ -77,9 +76,14 @@
 
 <script>
 // todo 回复框宽度需要进行动态设定 或者 进行重新布局
+import {insertComment} from '../../api/comment'
 export default {
   name: 'Comment',
-  props: ['comment', 'index'],
+  props: {
+    'comment': Object,
+    'index': Number,
+    'queryDiscussPost': Function
+  },
   data () {
     return {
       isReply: false,
@@ -96,6 +100,34 @@ export default {
       } else {
         this.isReply = false
       }
+    },
+    addComment (entityType, entityId, targetId) {
+      const comment = {
+        entityType: entityType,
+        entityId: entityId,
+        content: this.curComment,
+        targetId: targetId
+      }
+      insertComment(comment)
+        .then(res => {
+          if (res === 200) {
+            this.curComment = ''
+            this.queryDiscussPost()
+          } else {
+            throw new Error(res.msg)
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `评论失败！${ex.message}!请重试！`
+          })
+        })
+    }
+  },
+  watch: {
+    replyIdx () {
+      this.curComment = ''
     }
   }
 }
