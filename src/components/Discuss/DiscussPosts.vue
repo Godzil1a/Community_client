@@ -79,7 +79,7 @@ export default {
       }).catch(ex => {
         this.$notify.error({
           title: '错误',
-          message: '请求数据失败！'
+          message: `请求数据失败！${ex.message}`
         })
       })
     },

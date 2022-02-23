@@ -33,7 +33,7 @@
                   发布于 {{post.createTime | dateFormat}}
                 </el-col>
                 <el-col :span="3">
-                  赞 11 | 回帖 7
+                  赞 11 | 回帖 {{post.commentCount}}
                 </el-col>
               </el-row>
             </el-main>
