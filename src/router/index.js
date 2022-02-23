@@ -9,6 +9,7 @@ import Login from '../components/Login/Login'
 import Poem from '../components/Poem'
 import Info from '../components/User/Info'
 import PostDetail from '../components/Discuss/PostDetail'
+import Message from '../components/Message/Message'
 import state from '../store/state'
 
 var axios = require('axios')
@@ -27,6 +28,11 @@ const router = new Router({
           path: 'forum',
           name: 'DiscussPosts',
           component: DiscussPosts
+        },
+        {
+          path: 'message',
+          name: 'Message',
+          component: Message
         },
         {
           path: 'register',

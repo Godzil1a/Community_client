@@ -14,7 +14,7 @@
                   :default-active="curPage"
                   mode="horizontal">
                   <el-menu-item index="forum" :route="{path: '/forum'}">首页</el-menu-item>
-                  <el-menu-item index="2" v-show="loginStatus">消息</el-menu-item>
+                  <el-menu-item index="message" v-show="loginStatus" :route="{path: '/message'}">消息</el-menu-item>
                   <el-menu-item index="register" v-show="!loginStatus">注册</el-menu-item>
                   <el-menu-item index="login" v-show="!loginStatus">登录</el-menu-item>
                 </el-menu>
@@ -39,7 +39,7 @@
         </div>
       </el-header>
       <el-main class="main-page">
-        <div id="main">
+        <div id="main" style="margin-top: 10px;">
           <router-view></router-view>
         </div>
       </el-main>
