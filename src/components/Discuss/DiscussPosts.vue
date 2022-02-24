@@ -11,7 +11,7 @@
         <el-button type="primary" icon="el-icon-edit" @click="dialogVisible=true" v-if="loginStatus">发帖</el-button>
       </el-col>
     </el-row>
-    <div v-for="post in discussPosts" :key="post.id" class="post">
+    <div v-for="(post,index) in discussPosts" :key="index" class="post">
       <Post :discuss-post="post"></Post>
     </div>
     <el-pagination

@@ -109,7 +109,7 @@ export default {
     ...mapState(['loginStatus', 'user']),
     curPage () {
       let str = this.$route.path.substring(1)
-      let pos = str.lastIndexOf('/')
+      let pos = str.indexOf('/')
       return pos < 0 ? str : str.substring(0, pos)
     }
   },

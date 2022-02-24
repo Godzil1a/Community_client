@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-tabs type="border-card" style="width: 80%;margin: auto">
+  <div style="position: relative;width: 80%;margin: auto">
+    <el-tabs type="border-card">
       <el-tab-pane>
         <span slot="label">
           用户私信
@@ -54,10 +54,12 @@
         系统通知
       </el-tab-pane>
     </el-tabs>
+    <el-button style="position: absolute;right: 17px;top: 5px" type="text" icon="el-icon-edit" size="small">发送私信</el-button>
   </div>
 </template>
 
 <script>
+// todo 发送私信按钮布局待优化
 import {getMessageList} from '../../api/message'
 export default {
   name: 'Message',
@@ -110,5 +112,10 @@ export default {
 </script>
 
 <style scoped>
-
+.el-tabs__nav {
+  width:100%
+}
+.el-tabs__item{
+  float:left
+}
 </style>
