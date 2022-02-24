@@ -16,4 +16,12 @@ const queryLetterDetail = (conversationId, page) => {
   })
 }
 
-export {getMessageList, queryLetterDetail}
+const insertMessage = (message) => {
+  return request({
+    url: '/community/message/send',
+    method: 'post',
+    data: message
+  })
+}
+
+export {getMessageList, queryLetterDetail, insertMessage}

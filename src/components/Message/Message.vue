@@ -54,13 +54,37 @@
         系统通知
       </el-tab-pane>
     </el-tabs>
-    <el-button style="position: absolute;right: 17px;top: 5px" type="text" icon="el-icon-edit" size="small">发送私信</el-button>
+    <el-button style="position: absolute;right: 17px;top: 5px" type="text" icon="el-icon-edit" size="small" @click="dialogVisible=true">发送私信</el-button>
+    <el-dialog
+      title="私信"
+      @closed="curMessage={toName: '',content: ''}"
+      :visible.sync="dialogVisible"
+      style="text-align: left"
+      width="40%">
+      <el-form label-position="top" label-width="80px" :model="curMessage" :rules="rules" ref="messageForm">
+        <el-form-item label="发给：">
+          <el-input v-model="curMessage.toName" placeholder="请输入用户名"></el-input>
+        </el-form-item>
+        <el-form-item label="内容：">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 5, maxRows: 10}"
+            placeholder="请输入内容"
+            v-model="curMessage.content">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('messageForm')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 // todo 发送私信按钮布局待优化
-import {getMessageList} from '../../api/message'
+import {getMessageList, insertMessage} from '../../api/message'
 export default {
   name: 'Message',
   data () {
@@ -71,7 +95,16 @@ export default {
         total: 100
       },
       unreadCount: 0,
-      items: []
+      items: [],
+      dialogVisible: false,
+      curMessage: {
+        toName: '',
+        content: ''
+      },
+      rules: {
+        username: { required: true, message: '用户名不能为空！', trigger: 'blur' },
+        password: {required: true, message: '请输入密码！', trigger: 'blur'}
+      }
     }
   },
   methods: {
@@ -103,6 +136,45 @@ export default {
     },
     route (letter) {
       this.$router.push(`/message/detail/${letter.conversation.conversationId}`)
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 调用发送方法
+          this.sendMessage(this.curMessage)
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: '私信信息有误！'
+          })
+          return false
+        }
+      })
+    },
+    sendMessage (curMessage) {
+      let message = new FormData()
+      message.append('toName', curMessage.toName)
+      message.append('content', curMessage.content)
+      insertMessage(message)
+        .then(res => {
+          if (res.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '发送私信成功！',
+              type: 'success'
+            })
+            this.dialogVisible = false
+            this.queryMessageList()
+          } else {
+            throw new Error(res.msg)
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `私信信息有误！${ex.message}请重试！`
+          })
+        })
     }
   },
   mounted () {
