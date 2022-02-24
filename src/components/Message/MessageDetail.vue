@@ -2,20 +2,10 @@
   <div>
     <el-card>
       <div slot="header">
-        <el-row>
-          <el-col :span="20">
-            <i class="el-icon-message" style="float: left;margin-top: 13px"></i>
-            <span style="float: left;margin: 10px 10px">来自 {{target.username}} 的私信</span>
-          </el-col>
-          <el-col :span="2">
-            <el-button size="small" type="info" @click="$router.push('/message')">返回</el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-button size="small" type="success" @click="getLetterDetail">给TA私信</el-button>
-          </el-col>
-        </el-row>
+        <el-page-header @back="$router.push('/message')" :content="`来自${target.username}的私信`">
+        </el-page-header>
       </div>
-      <div class="content">
+      <div>
         <div  v-for="(obj,index) in letters" :key="index" style="margin: 20px 0 20px 0">
           <el-row type="flex" justify="space-between">
             <el-col :span="3">
@@ -54,12 +44,25 @@
           </el-row>
         </div>
       </div>
+      <div>
+        <el-form :model="curMessage" :rules="rules" ref="messageForm">
+          <el-form-item prop="content">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 5, maxRows: 10}"
+              placeholder="请输入内容"
+              v-model="curMessage.content">
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-button size="small" style="float: right;margin-bottom: 15px" type="primary" @click="submitForm('messageForm')">发送</el-button>
+      </div>
     </el-card>
   </div>
 </template>
 
 <script>
-import {queryLetterDetail} from '../../api/message'
+import {insertMessage, queryLetterDetail} from '../../api/message'
 export default {
   name: 'MessageDetail',
   data () {
@@ -70,7 +73,13 @@ export default {
         total: 100
       },
       target: {},
-      letters: []
+      letters: [],
+      curMessage: {
+        content: ''
+      },
+      rules: {
+        content: {required: true, message: '请输入私信内容！', trigger: 'blur'}
+      }
     }
   },
   methods: {
@@ -89,6 +98,45 @@ export default {
           this.$notify.error({
             title: '错误',
             message: `获取私信列表失败！${ex.message}请重试！`
+          })
+        })
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 调用发送方法
+          this.sendMessage(this.curMessage)
+        } else {
+          this.$notify.error({
+            title: '错误',
+            message: '私信信息有误！'
+          })
+          return false
+        }
+      })
+    },
+    sendMessage (curMessage) {
+      let message = new FormData()
+      message.append('toName', this.target.username)
+      message.append('content', curMessage.content)
+      insertMessage(message)
+        .then(res => {
+          if (res.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '发送私信成功！',
+              type: 'success'
+            })
+            this.getLetterDetail()
+            this.curMessage.content = ''
+          } else {
+            throw new Error(res.msg)
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `私信信息有误！${ex.message}请重试！`
           })
         })
     }

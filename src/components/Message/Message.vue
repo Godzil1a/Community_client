@@ -62,10 +62,10 @@
       style="text-align: left"
       width="40%">
       <el-form label-position="top" label-width="80px" :model="curMessage" :rules="rules" ref="messageForm">
-        <el-form-item label="发给：">
+        <el-form-item label="发给：" prop="toName">
           <el-input v-model="curMessage.toName" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="内容：">
+        <el-form-item label="内容：" prop="content">
           <el-input
             type="textarea"
             :autosize="{ minRows: 5, maxRows: 10}"
@@ -102,8 +102,8 @@ export default {
         content: ''
       },
       rules: {
-        username: { required: true, message: '用户名不能为空！', trigger: 'blur' },
-        password: {required: true, message: '请输入密码！', trigger: 'blur'}
+        toName: { required: true, message: '用户不能为空！', trigger: 'blur' },
+        content: {required: true, message: '请输入私信内容！', trigger: 'blur'}
       }
     }
   },
