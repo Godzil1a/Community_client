@@ -13,7 +13,7 @@ export default {
           name: 'Redirect',
           params: {
             msg: res.msg,
-            url: res.path
+            url: res.data
           }
         })
       }).catch(ex => {

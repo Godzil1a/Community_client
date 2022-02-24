@@ -104,7 +104,7 @@ export default {
             this.setUser({
               userId: this.user.userId,
               username: this.user.username,
-              header_url: res.header
+              header_url: res.data
             })
             this.$notify({
               title: '成功',
