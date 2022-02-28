@@ -33,7 +33,8 @@
                   发布于 {{post.createTime | dateFormat}}
                 </el-col>
                 <el-col :span="3">
-                  赞 11 | 回帖 {{post.commentCount}}
+                  <el-button type="text" @click="likePost(1,post.id)">{{likeStatus===1 ? '已赞' : '赞'}} {{likeCount}}</el-button>
+                   | 回帖 {{post.commentCount}}
                 </el-col>
               </el-row>
             </el-main>
@@ -84,6 +85,7 @@
 <script>
 import {getDiscussPostById} from '../../api/discussPosts'
 import {insertComment} from '../../api/comment'
+import {postLike} from '../../api/like'
 import Comment from './Comment'
 export default {
   name: 'PostDetail',
@@ -98,7 +100,9 @@ export default {
         pageSize: 10,
         total: 100
       },
-      curComment: ''
+      curComment: '',
+      likeCount: 0,
+      likeStatus: 0
     }
   },
   methods: {
@@ -113,6 +117,8 @@ export default {
           this.user = res.user
           this.comments = res.comments
           this.page.total = this.post.commentCount
+          this.likeCount = res.likeCount
+          this.likeStatus = res.likeStatus
         })
         .catch(ex => {
           this.$notify.error({
@@ -148,6 +154,25 @@ export default {
           this.$notify.error({
             title: '错误',
             message: `评论失败！${ex.message}!请重试！`
+          })
+        })
+    },
+    likePost (entityType, entityId) {
+      const data = new FormData()
+      data.append('entityType', entityType)
+      data.append('entityId', entityId)
+      postLike(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.likeCount = res.data.likeCount
+            this.likeStatus = res.data.likeStatus
+          } else {
+            throw new Error(res.msg)
+          }
+        }).catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `点赞失败！${ex.message}!请重试！`
           })
         })
     }

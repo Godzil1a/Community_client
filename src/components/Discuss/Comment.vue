@@ -27,7 +27,7 @@
               发布于 {{comment.comment.createTime | dateFormat}}
             </el-col>
             <el-col :span="4">
-              <el-button type="text">赞(0)</el-button>
+              <el-button type="text" @click="like(comment,2,comment.comment.id)">{{comment.likeStatus===1 ? '已赞' : '赞'}}({{comment.likeCount}})</el-button>
               <el-button type="text" @click="showReply">回复({{comment.replyCount}})</el-button>
             </el-col>
           </el-row>
@@ -47,7 +47,7 @@
                 发布于 {{reply.reply.createTime | dateFormat}}
               </el-col>
               <el-col :span="4">
-                <el-button type="text">赞(0)</el-button>
+                <el-button type="text" @click="like(reply,2,reply.reply.id)">{{reply.likeStatus===1 ? '已赞' : '赞'}}({{reply.likeCount}})</el-button>
                 <el-button type="text" @click="replyIdx=index">回复(0)</el-button>
               </el-col>
             </el-row>
@@ -77,6 +77,7 @@
 <script>
 // todo 回复框宽度需要进行动态设定 或者 进行重新布局
 import {insertComment} from '../../api/comment'
+import {postLike} from '../../api/like'
 export default {
   name: 'Comment',
   props: {
@@ -121,6 +122,26 @@ export default {
           this.$notify.error({
             title: '错误',
             message: `评论失败！${ex.message}!请重试！`
+          })
+        })
+    },
+    like (entity, entityType, entityId) {
+      const data = new FormData()
+      data.append('entityType', entityType)
+      data.append('entityId', entityId)
+      postLike(data)
+        .then(res => {
+          if (res.code === 200) {
+            entity.likeCount = res.data.likeCount
+            entity.likeStatus = res.data.likeStatus
+          } else {
+            throw new Error(res.msg)
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `点赞失败！${ex.message}!请重试！`
           })
         })
     }

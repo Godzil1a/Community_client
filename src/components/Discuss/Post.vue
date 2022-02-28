@@ -14,7 +14,14 @@
           </a>
         </el-header>
         <el-main>
-          {{discussPost.user.username }} 发布于 {{discussPost.post.createTime | dateFormat}}
+          <el-row type="flex" justify="space-between">
+            <el-col :span="20">
+              {{discussPost.user.username }} 发布于 {{discussPost.post.createTime | dateFormat}}
+            </el-col>
+            <el-col :span="4">
+              赞 {{discussPost.likeCount}} | 回复 7
+            </el-col>
+          </el-row>
         </el-main>
       </el-container>
     </el-container>
