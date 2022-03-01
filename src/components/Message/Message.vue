@@ -20,7 +20,7 @@
               <el-header style="height: 85px;padding-top: 10px">
                 <el-row>
                   <el-col :span="17" style="text-align: left">
-                    {{letter.target.username}}
+                    <span style="cursor: pointer;color: #088A08">{{letter.target.username}}</span>
                   </el-col>
                   <el-col :span="7">
                     {{letter.conversation.createTime | dateFormat}}

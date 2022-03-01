@@ -17,7 +17,7 @@
                     {{user.username}}
                   </el-col>
                   <el-col :span="3">
-                    <el-button type="success">关注TA</el-button>
+                    <el-button v-if="curUser.userId!==user.id" :type="isFollowing ? 'danger' : 'success'" @click="setFollowStatus(3,user.id)">{{isFollowing ? '取消关注' : '关注TA'}}</el-button>
                   </el-col>
                 </el-row>
               </el-header>
@@ -27,10 +27,10 @@
               <el-footer>
                 <el-row type="flex" justify="start" style="text-align: left">
                   <el-col :span="3">
-                    关注了 10 人
+                    关注了 {{followeeCount}} 人
                   </el-col>
                   <el-col :span="3">
-                    关注者 20 人
+                    关注者 {{followerCount}} 人
                   </el-col>
                   <el-col :span="3">
                     获得了 {{likeCount}} 个赞
@@ -52,14 +52,18 @@
 </template>
 
 <script>
-import {getProfile} from '../../api/user'
+import {getProfile, changeFollowStatus} from '../../api/user'
+import {mapState} from 'vuex'
 export default {
   name: 'Profile',
   data () {
     return {
       activeTab: 'info',
       user: {},
-      likeCount: 0
+      likeCount: 0,
+      isFollowing: false,
+      followeeCount: 0,
+      followerCount: 1
     }
   },
   methods: {
@@ -69,6 +73,9 @@ export default {
           if (res.code === 200) {
             this.user = res.data.user
             this.likeCount = res.data.likeCount
+            this.isFollowing = res.data.isFollowing
+            this.followeeCount = res.data.followeeCount
+            this.followerCount = res.data.followerCount
           } else {
             throw new Error(res.msg)
           }
@@ -79,10 +86,41 @@ export default {
             message: `获取用户信息失败！${ex.message}!请重试！`
           })
         })
+    },
+    setFollowStatus (entityType, entityId) {
+      const data = new FormData()
+      data.append('entityType', entityType)
+      data.append('entityId', entityId)
+      changeFollowStatus(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.queryUserProfile(this.$route.params.userId)
+          } else {
+            throw new Error(res.msg)
+          }
+        })
+        .catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `操作失败！${ex.message}!请重试！`
+          })
+        })
     }
   },
   mounted () {
     this.queryUserProfile(this.$route.params.userId)
+  },
+  computed: {
+    ...mapState({
+      curUser: 'user'
+    })
+  },
+  watch: {
+    $route (to, from) {
+      if (to.params.userId != null && from.params.userId != null && to.params.userId !== from.params.userId) {
+        this.queryUserProfile(this.$route.params.userId)
+      }
+    }
   }
 }
 </script>

@@ -26,4 +26,12 @@ const getProfile = (userId) => {
   })
 }
 
-export {uploadHeader, updatePassword, getProfile}
+const changeFollowStatus = (data) => {
+  return request({
+    url: '/community/changeFollowStatus',
+    method: 'post',
+    data: data
+  })
+}
+
+export {uploadHeader, updatePassword, getProfile, changeFollowStatus}

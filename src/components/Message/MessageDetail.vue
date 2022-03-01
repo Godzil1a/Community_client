@@ -20,12 +20,16 @@
                 <div slot="header">
                   <el-row type="flex" justify="space-between">
                     <el-col :span="6">
-                      <span style="float: left" v-if="obj.fromUser.id===target.id">{{ obj.fromUser.username}}</span>
+                      <span style="float: left;cursor: pointer;color: #088A08" v-if="obj.fromUser.id===target.id" @click="$router.push(`/profile/${obj.fromUser.id}`)">
+                        {{ obj.fromUser.username}}
+                      </span>
                       <span style="float: left" v-else>{{ obj.letter.createTime | dateFormat}}</span>
                     </el-col>
                     <el-col :span="6">
                       <span style="float: right" v-if="obj.fromUser.id===target.id">{{obj.letter.createTime | dateFormat}}</span>
-                      <span style="float: right" v-else>{{obj.fromUser.username}}</span>
+                      <span style="float: right;cursor: pointer;color: #088A08" v-else @click="$router.push(`/profile/${obj.fromUser.id}`)">
+                        {{obj.fromUser.username}}
+                      </span>
                     </el-col>
                   </el-row>
                 </div>
