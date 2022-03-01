@@ -1,6 +1,6 @@
 <template>
   <div>
-<!--    帖子详情-->
+    <!--    帖子详情-->
     <el-card>
       <div slot="header">
         <el-row>
@@ -20,21 +20,27 @@
         </el-row>
         <el-container style="margin-top: 20px">
           <el-aside width="100px">
-            <el-image
-              style="width: 70px; height: 70px"
-              :src="user.headerUrl"
-              fit="cover"></el-image>
+            <a @click="$router.push(`/profile/${user.id}`)">
+              <el-image
+                style="width: 70px; height: 70px; cursor: pointer"
+                :src="user.headerUrl"
+                fit="cover"></el-image>
+            </a>
           </el-aside>
           <el-container style="text-align: left">
-            <el-header style="height: 30px">{{user.username}}</el-header>
+            <el-header style="height: 30px">
+              <span @click="$router.push(`/profile/${user.id}`)" style="cursor: pointer;color: #088A08">
+                {{user.username}}
+              </span>
+            </el-header>
             <el-main>
               <el-row>
                 <el-col :span="21">
                   发布于 {{post.createTime | dateFormat}}
                 </el-col>
                 <el-col :span="3">
-                  <el-button type="text" @click="likePost(1,post.id)">{{likeStatus===1 ? '已赞' : '赞'}} {{likeCount}}</el-button>
-                   | 回帖 {{post.commentCount}}
+                  <el-button type="text" @click="likePost(1,post.id,user.id)">{{likeStatus===1 ? '已赞' : '赞'}} {{likeCount}}</el-button>
+                  <el-button type="text">回帖 {{post.commentCount}}</el-button>
                 </el-col>
               </el-row>
             </el-main>
@@ -45,7 +51,7 @@
         {{post.content | unescape}}
       </div>
     </el-card>
-<!--    回复-->
+    <!--    回复-->
     <br>
     <el-card>
       <div slot="header">
@@ -157,10 +163,11 @@ export default {
           })
         })
     },
-    likePost (entityType, entityId) {
+    likePost (entityType, entityId, entityUserId) {
       const data = new FormData()
       data.append('entityType', entityType)
       data.append('entityId', entityId)
+      data.append('entityUserId', entityUserId)
       postLike(data)
         .then(res => {
           if (res.code === 200) {

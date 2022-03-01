@@ -19,4 +19,11 @@ const updatePassword = (data) => {
   })
 }
 
-export {uploadHeader, updatePassword}
+const getProfile = (userId) => {
+  return request({
+    url: `/community/user/profile/${userId}`,
+    method: 'get'
+  })
+}
+
+export {uploadHeader, updatePassword, getProfile}

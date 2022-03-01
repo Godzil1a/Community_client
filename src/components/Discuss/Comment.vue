@@ -2,16 +2,18 @@
   <div>
     <el-container>
       <el-aside width="150px">
-        <el-image
-          style="width: 110px; height: 110px"
-          :src="comment.user.headerUrl"
-          fit="cover"></el-image>
+        <a @click="$router.push(`/profile/${comment.user.id}`)">
+          <el-image
+            style="width: 110px; height: 110px; cursor: pointer"
+            :src="comment.user.headerUrl"
+            fit="cover"></el-image>
+        </a>
       </el-aside>
       <el-container>
         <el-header style="height: 30px">
           <el-row>
             <el-col :span="21" style="text-align: left">
-              {{comment.user.username}}
+              <span @click="$router.push(`/profile/${comment.user.id}`)" style="cursor: pointer; color: #088A08">{{comment.user.username}}</span>
             </el-col>
             <el-col :span="3">
               {{index+1}} #
@@ -27,7 +29,7 @@
               发布于 {{comment.comment.createTime | dateFormat}}
             </el-col>
             <el-col :span="4">
-              <el-button type="text" @click="like(comment,2,comment.comment.id)">{{comment.likeStatus===1 ? '已赞' : '赞'}}({{comment.likeCount}})</el-button>
+              <el-button type="text" @click="like(comment,2,comment.comment.id,comment.user.id)">{{comment.likeStatus===1 ? '已赞' : '赞'}}({{comment.likeCount}})</el-button>
               <el-button type="text" @click="showReply">回复({{comment.replyCount}})</el-button>
             </el-col>
           </el-row>
@@ -38,8 +40,14 @@
       <div v-for="(reply,index) in comment.replys" :key="index">
         <el-container>
           <el-header style="height: 30px">
-            <span style="float: left" v-if="reply.target">{{reply.user.username}} 回复 {{reply.target.username}}:  {{reply.reply.content}}</span>
-            <span style="float: left" v-else>{{reply.user.username}}:  {{reply.reply.content}}</span>
+            <span style="float: left" v-if="reply.target">
+              <span @click="$router.push(`/profile/${reply.user.id}`)" style="cursor: pointer; color: #088A08">{{reply.user.username}} </span>
+              回复
+              <span @click="$router.push(`/profile/${reply.target.id}`)" style="cursor: pointer; color: #088A08">{{reply.target.username}} </span>
+              :  {{reply.reply.content}}</span>
+            <span style="float: left" v-else>
+              <span @click="$router.push(`/profile/${reply.user.id}`)" style="cursor: pointer; color: #088A08">{{reply.user.username}}</span>
+              :  {{reply.reply.content}}</span>
           </el-header>
           <el-main style="padding: 5px 20px 5px 20px">
             <el-row>
@@ -47,7 +55,7 @@
                 发布于 {{reply.reply.createTime | dateFormat}}
               </el-col>
               <el-col :span="4">
-                <el-button type="text" @click="like(reply,2,reply.reply.id)">{{reply.likeStatus===1 ? '已赞' : '赞'}}({{reply.likeCount}})</el-button>
+                <el-button type="text" @click="like(reply,2,reply.reply.id,reply.reply.userId)">{{reply.likeStatus===1 ? '已赞' : '赞'}}({{reply.likeCount}})</el-button>
                 <el-button type="text" @click="replyIdx=index">回复(0)</el-button>
               </el-col>
             </el-row>
@@ -125,10 +133,11 @@ export default {
           })
         })
     },
-    like (entity, entityType, entityId) {
+    like (entity, entityType, entityId, entityUserId) {
       const data = new FormData()
       data.append('entityType', entityType)
       data.append('entityId', entityId)
+      data.append('entityUserId', entityUserId)
       postLike(data)
         .then(res => {
           if (res.code === 200) {

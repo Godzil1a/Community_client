@@ -11,6 +11,7 @@ import Info from '../components/User/Info'
 import PostDetail from '../components/Discuss/PostDetail'
 import Message from '../components/Message/Message'
 import MessageDetail from '../components/Message/MessageDetail'
+import Profile from '../components/User/Profile'
 import state from '../store/state'
 
 var axios = require('axios')
@@ -72,6 +73,12 @@ const router = new Router({
           path: 'post/:id',
           name: 'PostDetail',
           component: PostDetail
+        },
+        {
+          path: 'profile/:userId',
+          name: 'Profile',
+          props: true,
+          component: Profile
         },
         {
           path: '',

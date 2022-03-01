@@ -2,10 +2,12 @@
   <div class="post">
     <el-container>
       <el-aside width="200px">
-        <el-image
-          style="width: 100px; height: 100px"
-          :src="discussPost.user.headerUrl"
-          fit="cover"></el-image>
+        <a @click="$router.push(`/profile/${discussPost.user.id}`)">
+          <el-image
+            style="width: 100px; height: 100px; cursor: pointer"
+            :src="discussPost.user.headerUrl"
+            fit="cover"></el-image>
+        </a>
       </el-aside>
       <el-container style="text-align: left">
         <el-header>
@@ -16,7 +18,8 @@
         <el-main>
           <el-row type="flex" justify="space-between">
             <el-col :span="20">
-              {{discussPost.user.username }} 发布于 {{discussPost.post.createTime | dateFormat}}
+              <a @click="$router.push(`/profile/${discussPost.user.id}`)" style="cursor: pointer; color: #088A08">{{discussPost.user.username }}</a>
+               发布于 {{discussPost.post.createTime | dateFormat}}
             </el-col>
             <el-col :span="4">
               赞 {{discussPost.likeCount}} | 回复 7
