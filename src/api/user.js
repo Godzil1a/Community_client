@@ -34,4 +34,20 @@ const changeFollowStatus = (data) => {
   })
 }
 
-export {uploadHeader, updatePassword, getProfile, changeFollowStatus}
+const queryFollowee = (userId, page) => {
+  return request({
+    url: `/community/followee/${userId}`,
+    method: 'get',
+    params: page
+  })
+}
+
+const queryFollower = (userId, page) => {
+  return request({
+    url: `/community/follower/${userId}`,
+    method: 'get',
+    params: page
+  })
+}
+
+export {uploadHeader, updatePassword, getProfile, changeFollowStatus, queryFollowee, queryFollower}

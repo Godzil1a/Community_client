@@ -27,10 +27,10 @@
               <el-footer>
                 <el-row type="flex" justify="start" style="text-align: left">
                   <el-col :span="3">
-                    关注了 {{followeeCount}} 人
+                    关注了 <span @click="$router.push(`/follow/${user.id}/followee`)" style="cursor: pointer;color: #088A08">{{followeeCount}}</span> 人
                   </el-col>
                   <el-col :span="3">
-                    关注者 {{followerCount}} 人
+                    关注者 <span @click="$router.push(`/follow/${user.id}/follower`)" style="cursor: pointer;color: #088A08">{{followerCount}}</span> 人
                   </el-col>
                   <el-col :span="3">
                     获得了 {{likeCount}} 个赞
