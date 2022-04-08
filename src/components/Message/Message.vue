@@ -50,7 +50,11 @@
           :total="page.total">
         </el-pagination>
       </el-tab-pane>
-      <el-tab-pane label="系统通知">
+      <el-tab-pane>
+        <span slot="label">
+          系统通知
+          <el-badge :value="unreadNoticeCount" :hidden="unreadNoticeCount===0"></el-badge>
+        </span>
 <!--        点赞-->
         <div style="cursor: pointer" @click="$router.push('/notice/detail/like')">
           <el-container>
@@ -191,7 +195,6 @@
 
 <script>
 // todo 发送私信按钮布局待优化
-// todo 通知数量提示
 import {getMessageList, insertMessage, queryNoticeList} from '../../api/message'
 export default {
   name: 'Message',
