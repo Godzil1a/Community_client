@@ -13,6 +13,7 @@ import Message from '../components/Message/Message'
 import MessageDetail from '../components/Message/MessageDetail'
 import Profile from '../components/User/Profile'
 import Follow from '../components/User/Follow'
+import NoticeDetail from '../components/Message/NoticeDetail'
 import state from '../store/state'
 
 var axios = require('axios')
@@ -69,6 +70,12 @@ const router = new Router({
           name: 'MessageDetail',
           props: true,
           component: MessageDetail
+        },
+        {
+          path: 'notice/detail/:topic',
+          name: 'NoticeDetail',
+          props: true,
+          component: NoticeDetail
         },
         {
           path: 'post/:id',

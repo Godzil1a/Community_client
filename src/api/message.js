@@ -31,4 +31,12 @@ const queryNoticeList = () => {
   })
 }
 
-export {getMessageList, queryLetterDetail, insertMessage, queryNoticeList}
+const queryNoticeDetail = (topic, page) => {
+  return request({
+    url: `/community/message/notice/detail/${topic}`,
+    method: 'get',
+    params: page
+  })
+}
+
+export {getMessageList, queryLetterDetail, insertMessage, queryNoticeList, queryNoticeDetail}

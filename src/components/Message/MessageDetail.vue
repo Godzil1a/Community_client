@@ -6,7 +6,7 @@
         </el-page-header>
       </div>
       <div>
-        <div  v-for="(obj,index) in letters" :key="index" style="margin: 20px 0 20px 0">
+        <div v-for="(obj,index) in letters" :key="index" style="margin: 20px 0 20px 0">
           <el-row type="flex" justify="space-between">
             <el-col :span="3">
               <el-image
@@ -48,7 +48,16 @@
           </el-row>
         </div>
       </div>
-      <div>
+      <el-pagination
+        @size-change="changePageSize"
+        @current-change="changePage"
+        :current-page="page.currentPage"
+        :page-sizes="[10, 20, 30]"
+        :page-size="page.pageSize"
+        layout="jumper, prev, pager, next, sizes, total"
+        :total="page.total">
+      </el-pagination>
+      <div style="margin-top: 10px">
         <el-form :model="curMessage" :rules="rules" ref="messageForm">
           <el-form-item prop="content">
             <el-input
@@ -94,6 +103,7 @@ export default {
           if (res.code === 200) {
             this.target = res.target
             this.letters = res.letters
+            this.page.total = res.count
           } else {
             throw new Error(res.msg)
           }
@@ -143,6 +153,14 @@ export default {
             message: `私信信息有误！${ex.message}请重试！`
           })
         })
+    },
+    changePageSize (curPageSize) {
+      this.page.pageSize = curPageSize
+      this.getLetterDetail()
+    },
+    changePage (curPage) {
+      this.page.currentPage = curPage
+      this.getLetterDetail()
     }
   },
   mounted () {

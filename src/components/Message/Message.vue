@@ -52,7 +52,7 @@
       </el-tab-pane>
       <el-tab-pane label="系统通知">
 <!--        点赞-->
-        <div style="cursor: pointer">
+        <div style="cursor: pointer" @click="$router.push('/notice/detail/like')">
           <el-container>
             <el-aside width="150px" style="padding-top: 10px">
               <el-badge :value="hasLike ? notices.like.unread : 0" :hidden="!hasLike || notices.like.unread===0">
@@ -66,7 +66,7 @@
               <el-header style="height: 45px;padding-top: 10px">
                 <el-row>
                   <el-col :span="19" style="text-align: left">
-                    <span>赞</span>
+                    <span>点赞</span>
                   </el-col>
                   <el-col :span="5">
                     共 {{hasLike ? notices.like.count : 0}} 条通知
@@ -88,7 +88,7 @@
           </el-container>
         </div>
 <!--        评论-->
-        <div style="cursor: pointer">
+        <div style="cursor: pointer" @click="$router.push('/notice/detail/comment')">
           <el-container>
             <el-aside width="150px" style="padding-top: 10px">
               <el-badge :value="hasComment ? notices.comment.unread : 0" :hidden="!hasComment || notices.comment.unread===0">
@@ -124,7 +124,7 @@
           </el-container>
         </div>
 <!--        关注-->
-        <div style="cursor: pointer">
+        <div style="cursor: pointer" @click="$router.push('/notice/detail/follow')">
           <el-container>
             <el-aside width="150px" style="padding-top: 10px">
               <el-badge :value="hasFollow ? notices.follow.unread : 0" :hidden="!hasFollow || notices.follow.unread===0">
@@ -191,6 +191,7 @@
 
 <script>
 // todo 发送私信按钮布局待优化
+// todo 通知数量提示
 import {getMessageList, insertMessage, queryNoticeList} from '../../api/message'
 export default {
   name: 'Message',
