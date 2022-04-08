@@ -39,4 +39,12 @@ const queryNoticeDetail = (topic, page) => {
   })
 }
 
-export {getMessageList, queryLetterDetail, insertMessage, queryNoticeList, queryNoticeDetail}
+const queryUnreadCnt = (userId) => {
+  return request({
+    url: '/community/message/unreadCnt',
+    method: 'get',
+    params: {userId: userId}
+  })
+}
+
+export {getMessageList, queryLetterDetail, insertMessage, queryNoticeList, queryNoticeDetail, queryUnreadCnt}

@@ -53,7 +53,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      stateLogin: 'login'
+      stateLogin: 'login',
+      setUnreadCnt: 'setUnreadCnt'
     }),
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -81,6 +82,7 @@ export default {
             username: user.username,
             header_url: res.header_url
           })
+          this.setUnreadCnt(res.userId)
           this.$notify({
             title: '成功',
             message: '登陆成功！',

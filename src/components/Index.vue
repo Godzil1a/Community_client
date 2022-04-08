@@ -14,7 +14,10 @@
                   :default-active="curPage"
                   mode="horizontal">
                   <el-menu-item index="forum" :route="{path: '/forum'}">首页</el-menu-item>
-                  <el-menu-item index="message" v-show="loginStatus" :route="{path: '/message'}">消息</el-menu-item>
+                  <el-menu-item index="message" v-show="loginStatus" :route="{path: '/message'}">
+                    消息
+                    <el-badge :value="unreadCnt" :hidden="unreadCnt === 0"></el-badge>
+                  </el-menu-item>
                   <el-menu-item index="register" v-show="!loginStatus">注册</el-menu-item>
                   <el-menu-item index="login" v-show="!loginStatus">登录</el-menu-item>
                 </el-menu>
@@ -61,7 +64,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({stateLogout: 'logout', login: 'login'}),
+    ...mapActions({stateLogout: 'logout', login: 'login', setUnreadCnt: 'setUnreadCnt'}),
     userLogout () {
       logout()
         .then(res => {
@@ -93,6 +96,7 @@ export default {
               username: res.username,
               header_url: res.header_url
             })
+            this.setUnreadCnt(res.userId)
           }
         })
         .catch(ex => {
@@ -104,7 +108,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['loginStatus', 'user']),
+    ...mapState(['loginStatus', 'user', 'unreadCnt']),
     curPage () {
       let str = this.$route.path.substring(1)
       let pos = str.indexOf('/')

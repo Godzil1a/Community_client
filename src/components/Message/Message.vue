@@ -297,7 +297,7 @@ export default {
       queryNoticeList()
         .then(res => {
           if (res.code === 200) {
-            this.unreadNoticeCount = res.unreadCount
+            this.unreadNoticeCount = res.data.unreadCount
             this.notices.like = res.data.likeNotice
             this.notices.comment = res.data.commentNotice
             this.notices.follow = res.data.followNotice

@@ -76,6 +76,7 @@
 
 <script>
 import {insertMessage, queryLetterDetail} from '../../api/message'
+import {mapState, mapActions} from 'vuex'
 export default {
   name: 'MessageDetail',
   data () {
@@ -95,7 +96,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
+    ...mapActions({setUnreadCnt: 'setUnreadCnt'}),
     getLetterDetail () {
       const conversationId = this.$attrs.convsersationId
       queryLetterDetail(conversationId, this.page)
@@ -104,6 +109,7 @@ export default {
             this.target = res.target
             this.letters = res.letters
             this.page.total = res.count
+            this.setUnreadCnt(this.user.userId)
           } else {
             throw new Error(res.msg)
           }

@@ -57,6 +57,7 @@
 
 <script>
 // todo:点我查看跳转功能
+import {mapState, mapActions} from 'vuex'
 import {queryNoticeDetail} from '../../api/message'
 export default {
   name: 'NoticeDetail',
@@ -72,6 +73,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions({setUnreadCnt: 'setUnreadCnt'}),
+
     changePageSize (curPageSize) {
       this.page.pageSize = curPageSize
       this.getNoticeDetail()
@@ -87,6 +90,7 @@ export default {
           if (res.code === 200) {
             this.page.total = res.data.count
             this.notices = res.data.notices
+            this.setUnreadCnt(this.user.userId)
           } else {
             throw new Error(res.msg)
           }
@@ -100,6 +104,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['user']),
     pageName () {
       return this.$attrs.topic === 'like' ? '点赞' : this.$attrs.topic === 'comment' ? '评论' : '关注'
     }

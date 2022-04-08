@@ -6,6 +6,9 @@ const mutations = {
   },
   [types.SET_LOGIN] (state, status) {
     state.loginStatus = status
+  },
+  [types.SET_UNREAD_CNT] (state, unreadCnt) {
+    state.unreadCnt = unreadCnt
   }
 }
 

@@ -1,4 +1,5 @@
 import types from './mutation-types'
+import {queryUnreadCnt} from '../api/message'
 
 const actions = {
   login ({commit}, user) {
@@ -15,6 +16,19 @@ const actions = {
   },
   setUser ({rootState, commit}, user) {
     commit(types.SET_USER, user)
+  },
+  setUnreadCnt ({commit}, userId) {
+    queryUnreadCnt(userId)
+      .then(res => {
+        if (res.code === 200) {
+          commit(types.SET_UNREAD_CNT, res.data)
+        } else {
+          throw new Error(res.msg)
+        }
+      })
+      .catch(ex => {
+        commit(types.SET_UNREAD_CNT, 0)
+      })
   }
 }
 
