@@ -14,6 +14,7 @@ import MessageDetail from '../components/Message/MessageDetail'
 import Profile from '../components/User/Profile'
 import Follow from '../components/User/Follow'
 import NoticeDetail from '../components/Message/NoticeDetail'
+import Search from '../components/Discuss/Search'
 import state from '../store/state'
 
 var axios = require('axios')
@@ -93,6 +94,11 @@ const router = new Router({
           name: 'Follow',
           props: true,
           component: Follow
+        },
+        {
+          path: 'search',
+          name: 'Search',
+          component: Search
         },
         {
           path: '',

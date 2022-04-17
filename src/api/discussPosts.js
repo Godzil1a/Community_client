@@ -27,4 +27,17 @@ const getDiscussPostById = (id, offset, limit) => {
   })
 }
 
-export {getDiscussPosts, addPost, getDiscussPostById}
+const searchDiscussPost = (keyword, page) => {
+  return request({
+    url: '/community/search',
+    method: 'get',
+    params: {
+      keyword: keyword,
+      currentPage: page.currentPage,
+      pageSize: page.pageSize,
+      total: page.total
+    }
+  })
+}
+
+export {getDiscussPosts, addPost, getDiscussPostById, searchDiscussPost}

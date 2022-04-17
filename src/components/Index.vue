@@ -18,14 +18,15 @@
                     消息
                     <el-badge :value="unreadCnt" :hidden="unreadCnt === 0"></el-badge>
                   </el-menu-item>
+                  <el-menu-item index="search" :route="{path: '/search'}">搜索</el-menu-item>
                   <el-menu-item index="register" v-show="!loginStatus">注册</el-menu-item>
                   <el-menu-item index="login" v-show="!loginStatus">登录</el-menu-item>
                 </el-menu>
               </div>
             </el-col>
             <el-col :span="6" style="padding-top: 8px">
-              <el-input style="width: 200px" v-model="searchParams" placeholder="请输入内容"></el-input>
-              <el-button style="margin-left: 10px" icon="el-icon-search" circle></el-button>
+<!--              <el-input style="width: 200px" v-model="searchParams" placeholder="请输入内容"></el-input>-->
+<!--              <el-button style="margin-left: 10px" icon="el-icon-search" circle @click="test"></el-button>-->
             </el-col>
             <el-col :span="6" style="padding-top: 8px">
               <el-dropdown style="float: left" placement="bottom" v-show="loginStatus">
@@ -56,11 +57,11 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import {logout, getLoginStatus} from '../api/log'
+import {searchDiscussPost} from '../api/discussPosts'
 export default {
   name: 'Index',
   data () {
     return {
-      searchParams: ''
     }
   },
   methods: {
@@ -104,6 +105,20 @@ export default {
             title: '错误',
             message: '获取登录信息失败！'
           })
+        })
+    },
+    test () {
+      const page = {
+        currentPage: 1,
+        pageSize: 10,
+        total: 100
+      }
+      searchDiscussPost('互联网', page)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(ex => {
+          console.log(ex)
         })
     }
   },
