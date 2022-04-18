@@ -22,7 +22,7 @@
                发布于 {{discussPost.post.createTime | dateFormat}}
             </el-col>
             <el-col :span="4">
-              赞 {{discussPost.likeCount}} | 回复 7
+              赞 {{discussPost.likeCount}} | 回复 {{discussPost.post.commentCount}}
             </el-col>
           </el-row>
         </el-main>
