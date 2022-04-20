@@ -54,7 +54,6 @@
 </template>
 
 <script>
-// TODO 待实现搜索内容高亮
 import {searchDiscussPost} from '../../api/discussPosts'
 export default {
   name: 'Search',

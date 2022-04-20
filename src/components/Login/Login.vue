@@ -80,7 +80,8 @@ export default {
           this.stateLogin({
             userId: res.userId,
             username: user.username,
-            header_url: res.header_url
+            header_url: res.header_url,
+            type: res.type
           })
           this.setUnreadCnt(res.userId)
           this.$notify({

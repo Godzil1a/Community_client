@@ -11,7 +11,8 @@ const actions = {
     commit(types.SET_USER, {
       userId: '',
       username: '',
-      header_url: ''
+      header_url: '',
+      type: 0
     })
   },
   setUser ({rootState, commit}, user) {

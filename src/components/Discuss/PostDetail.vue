@@ -9,13 +9,13 @@
             <span style="float: left;margin: 10px 10px">{{post.title | unescape}}</span>
           </el-col>
           <el-col :span="2">
-            <el-button size="small" type="danger">置顶</el-button>
+            <el-button size="small" :type="post.type===0 ? 'danger' : 'info'" v-show="currentUser.type>=2" @click="updateType(post.id,post.type===0 ? 1 :0)">{{post.type===0 ? '置顶' : '取消置顶'}}</el-button>
           </el-col>
           <el-col :span="2">
-            <el-button size="small" type="danger">加精</el-button>
+            <el-button size="small" :type="post.status===0 ? 'danger' : 'info'" v-show="currentUser.type>=2" @click="updateStatus(post.id,post.status===0 ? 1 :0)">{{post.status===0 ? '加精' : '取消加精'}}</el-button>
           </el-col>
           <el-col :span="2">
-            <el-button size="small" type="danger">删除</el-button>
+            <el-button size="small" type="danger" v-show="currentUser.type>=1" @click="deletePost(post.id)">删 除</el-button>
           </el-col>
         </el-row>
         <el-container style="margin-top: 20px">
@@ -89,10 +89,11 @@
 </template>
 
 <script>
-import {getDiscussPostById} from '../../api/discussPosts'
+import {getDiscussPostById, setType, setStatus} from '../../api/discussPosts'
 import {insertComment} from '../../api/comment'
 import {postLike} from '../../api/like'
 import Comment from './Comment'
+import {mapState} from 'vuex'
 export default {
   name: 'PostDetail',
   components: {Comment},
@@ -182,10 +183,67 @@ export default {
             message: `点赞失败！${ex.message}!请重试！`
           })
         })
+    },
+    updateType (id, type) {
+      let data = new FormData()
+      data.append('id', id)
+      data.append('type', type)
+      setType(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.queryDiscussPost()
+          } else {
+            throw new Error(res.msg)
+          }
+        }).catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `置顶失败！${ex.message}!请重试！`
+          })
+        })
+    },
+    updateStatus (id, status) {
+      let data = new FormData()
+      data.append('id', id)
+      data.append('status', status)
+      setStatus(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.queryDiscussPost()
+          } else {
+            throw new Error(res.msg)
+          }
+        }).catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `加精失败！${ex.message}!请重试！`
+          })
+        })
+    },
+    deletePost (id) {
+      let data = new FormData()
+      data.append('id', id)
+      data.append('status', 2)
+      setStatus(data)
+        .then(res => {
+          if (res.code === 200) {
+            this.$router.push('/forum')
+          } else {
+            throw new Error(res.msg)
+          }
+        }).catch(ex => {
+          this.$notify.error({
+            title: '错误',
+            message: `删除失败！${ex.message}!请重试！`
+          })
+        })
     }
   },
   mounted () {
     this.queryDiscussPost()
+  },
+  computed: {
+    ...mapState({currentUser: 'user'})
   }
 }
 </script>

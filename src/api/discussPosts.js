@@ -3,8 +3,8 @@ import request from '../utils/request'
 const getDiscussPosts = (page) => {
   return request({
     url: '/community/getDiscussPosts',
-    method: 'post',
-    data: page
+    method: 'get',
+    params: page
   })
 }
 
@@ -40,4 +40,20 @@ const searchDiscussPost = (keyword, page) => {
   })
 }
 
-export {getDiscussPosts, addPost, getDiscussPostById, searchDiscussPost}
+const setType = (data) => {
+  return request({
+    url: '/community/discuss/setType',
+    method: 'post',
+    data: data
+  })
+}
+
+const setStatus = (data) => {
+  return request({
+    url: '/community/discuss/setStatus',
+    method: 'post',
+    data: data
+  })
+}
+
+export {getDiscussPosts, addPost, getDiscussPostById, searchDiscussPost, setType, setStatus}

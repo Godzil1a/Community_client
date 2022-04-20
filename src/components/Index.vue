@@ -19,8 +19,8 @@
                     <el-badge :value="unreadCnt" :hidden="unreadCnt === 0"></el-badge>
                   </el-menu-item>
                   <el-menu-item index="search" :route="{path: '/search'}">搜索</el-menu-item>
-                  <el-menu-item index="register" v-show="!loginStatus">注册</el-menu-item>
-                  <el-menu-item index="login" v-show="!loginStatus">登录</el-menu-item>
+                  <el-menu-item index="register" v-show="!loginStatus" :route="{path: '/register'}">注册</el-menu-item>
+                  <el-menu-item index="login" v-show="!loginStatus" :route="{path: '/login'}">登录</el-menu-item>
                 </el-menu>
               </div>
             </el-col>
@@ -57,7 +57,6 @@
 <script>
 import {mapState, mapActions} from 'vuex'
 import {logout, getLoginStatus} from '../api/log'
-import {searchDiscussPost} from '../api/discussPosts'
 export default {
   name: 'Index',
   data () {
@@ -95,7 +94,8 @@ export default {
             this.login({
               userId: res.userId,
               username: res.username,
-              header_url: res.header_url
+              header_url: res.header_url,
+              type: res.type
             })
             this.setUnreadCnt(res.userId)
           }
@@ -105,20 +105,6 @@ export default {
             title: '错误',
             message: '获取登录信息失败！'
           })
-        })
-    },
-    test () {
-      const page = {
-        currentPage: 1,
-        pageSize: 10,
-        total: 100
-      }
-      searchDiscussPost('互联网', page)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(ex => {
-          console.log(ex)
         })
     }
   },

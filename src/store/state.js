@@ -3,7 +3,8 @@ const state = {
   user: {
     userId: '',
     username: '',
-    header_url: ''
+    header_url: '',
+    type: 0
   },
   unreadCnt: 0
 }
