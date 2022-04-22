@@ -21,6 +21,7 @@
                   <el-menu-item index="search" :route="{path: '/search'}">搜索</el-menu-item>
                   <el-menu-item index="register" v-show="!loginStatus" :route="{path: '/register'}">注册</el-menu-item>
                   <el-menu-item index="login" v-show="!loginStatus" :route="{path: '/login'}">登录</el-menu-item>
+                  <el-menu-item index="data" :route="{path: '/data'}">统计</el-menu-item>
                 </el-menu>
               </div>
             </el-col>
