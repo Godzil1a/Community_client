@@ -7,6 +7,8 @@
           <el-col :span="18">
             <i class="el-icon-postcard" style="float: left;margin-top: 13px"></i>
             <span style="float: left;margin: 10px 10px">{{post.title | unescape}}</span>
+            <el-tag style="float: left;margin: 5px 5px" type="success" v-if="post.status===1">精华</el-tag>
+            <el-tag style="float: left;margin: 5px 5px" type="danger" v-if="post.type===1">置顶</el-tag>
           </el-col>
           <el-col :span="2">
             <el-button size="small" :type="post.type===0 ? 'danger' : 'info'" v-show="currentUser.type>=2" @click="updateType(post.id,post.type===0 ? 1 :0)">{{post.type===0 ? '置顶' : '取消置顶'}}</el-button>

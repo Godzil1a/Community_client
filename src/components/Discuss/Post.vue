@@ -14,6 +14,8 @@
           <a style="cursor: pointer" @click="route">
             {{discussPost.post.title | unescape}}
           </a>
+          <el-tag type="success" v-if="discussPost.post.status===1">精华</el-tag>
+          <el-tag type="danger" v-if="discussPost.post.type===1">置顶</el-tag>
         </el-header>
         <el-main>
           <el-row type="flex" justify="space-between">
