@@ -1,14 +1,18 @@
 <template>
   <div>
-    <el-row>
-      <el-col :span="3">
-        最新
-      </el-col>
-      <el-col :span="3">
-        最热
-      </el-col>
+    <el-row type="flex">
+      <el-col :span="6"><div class="grid-content bg-purple">
+        <el-switch
+          v-model="queryMode"
+          @change="getDiscussPosts(page,queryMode)"
+          :active-value="1"
+          :inactive-value="0"
+          active-text="最热"
+          inactive-text="最新">
+        </el-switch>
+      </div></el-col>
       <el-col :span="18">
-        <el-button type="primary" icon="el-icon-edit" @click="dialogVisible=true" v-if="loginStatus">发帖</el-button>
+        <el-button style="float: right" type="primary" icon="el-icon-edit" @click="dialogVisible=true" v-if="loginStatus">发帖</el-button>
       </el-col>
     </el-row>
     <div v-for="(post,index) in discussPosts" :key="index" class="post">
@@ -55,6 +59,7 @@ export default {
   data () {
     return {
       discussPosts: [],
+      queryMode: 0,
       page: {
         currentPage: 1,
         pageSize: 10,
@@ -72,8 +77,8 @@ export default {
     }
   },
   methods: {
-    getDiscussPosts () {
-      getDiscussPosts(this.page).then(res => {
+    getDiscussPosts (page, queryMode) {
+      getDiscussPosts(page, queryMode).then(res => {
         this.discussPosts = res.discussPosts
         this.page = res.page
       }).catch(ex => {
@@ -85,11 +90,11 @@ export default {
     },
     changePageSize (curPageSize) {
       this.page.pageSize = curPageSize
-      this.getDiscussPosts()
+      this.getDiscussPosts(this.page, this.queryMode)
     },
     changePage (curPage) {
       this.page.currentPage = curPage
-      this.getDiscussPosts()
+      this.getDiscussPosts(this.page, this.queryMode)
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -118,7 +123,7 @@ export default {
               type: 'success'
             })
             this.dialogVisible = false
-            this.getDiscussPosts()
+            this.getDiscussPosts(this.page, this.queryMode)
           } else {
             throw new Error(res.msg)
           }
@@ -138,7 +143,7 @@ export default {
     }
   },
   mounted () {
-    this.getDiscussPosts()
+    this.getDiscussPosts(this.page, this.queryMode)
   },
   computed: {
     ...mapState(['loginStatus'])

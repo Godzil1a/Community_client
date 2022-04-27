@@ -1,10 +1,15 @@
 import request from '../utils/request'
 
-const getDiscussPosts = (page) => {
+const getDiscussPosts = (page, queryMode) => {
   return request({
     url: '/community/getDiscussPosts',
     method: 'get',
-    params: page
+    params: {
+      currentPage: page.currentPage,
+      pageSize: page.pageSize,
+      total: page.total,
+      queryMode: queryMode
+    }
   })
 }
 
